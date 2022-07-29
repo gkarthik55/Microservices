@@ -8,5 +8,5 @@ import com.microservices.CitizenService.Entity.Citizen;
 
 public interface CitizenRepo extends JpaRepository<Citizen, Integer> 
 {
-	public List<Citizen> findByVaccinationCenterId(int id);
+	public List<Citizen> findByVaccinationCenterId(Integer id);
 }

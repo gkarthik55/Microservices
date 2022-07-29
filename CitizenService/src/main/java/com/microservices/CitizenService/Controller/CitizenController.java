@@ -1,8 +1,5 @@
 package com.microservices.CitizenService.Controller;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +22,7 @@ public class CitizenController
 	@RequestMapping(path="/test")
 	public ResponseEntity<String> test()
 	{
-		return new ResponseEntity<>("hello", HttpStatus.OK);
+		return new ResponseEntity<>("hello citizen", HttpStatus.OK);
 	}
 	
 	@PostMapping("/add")
@@ -37,25 +34,25 @@ public class CitizenController
 	}
 	
 	@RequestMapping(path="/getAll")
-	public ResponseEntity<List<Citizen>> getAllCitizens()
+	public ResponseEntity<java.util.List<Citizen>> getAllCitizens()
 	{
-		List<Citizen> citizenList = repo.findAll();
+		java.util.List<Citizen> citizenList = repo.findAll();
 		
 		return new ResponseEntity<>(citizenList, HttpStatus.OK);
 	}
 	
 	@RequestMapping(path="/getById/{id}")
-	public Optional<Citizen> getById(@PathVariable Integer id)
+	public Citizen getById(@PathVariable Integer id)
 	{
-		Optional<Citizen> citizen = repo.findById(id);
+		 Citizen citizen = repo.findById(id).get();
 	
 		return citizen;
 	}
 	
 	@RequestMapping(path="/getByVaccinationCenterId/{id}")
-	public ResponseEntity<List<Citizen>> getByVaccinationCenterId(@PathVariable Integer id)
+	public ResponseEntity<java.util.List<Citizen>> getByVaccinationCenterId(@PathVariable Integer id)
 	{
-		List<Citizen> citizenList = repo.findByVaccinationCenterId(id);
+		java.util.List<Citizen> citizenList = repo.findByVaccinationCenterId(id);
 	
 		return new ResponseEntity<>(citizenList, HttpStatus.OK);
 	}
