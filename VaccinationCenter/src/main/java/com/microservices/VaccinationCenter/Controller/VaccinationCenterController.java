@@ -16,6 +16,7 @@ import com.microservices.VaccinationCenter.Entity.VaccinationCenter;
 import com.microservices.VaccinationCenter.Model.CenterResponse;
 import com.microservices.VaccinationCenter.Model.Citizen;
 import com.microservices.VaccinationCenter.Repository.VaccinationCenterRepo;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 @RequestMapping("/vaccinationcenter")
@@ -34,6 +35,7 @@ public class VaccinationCenterController {
 	}
 
 	@RequestMapping("/getAllDataById/{id}")
+	@HystrixCommand(fallbackMethod = "handleCitizenDownTime")
 	public ResponseEntity<CenterResponse> getAllDataBasedOnCenterId(@PathVariable int id) {
 		CenterResponse centerResponse = new CenterResponse();
 
@@ -47,5 +49,14 @@ public class VaccinationCenterController {
 
 		// Then get all the Citizen registered to vaccination center.
 		return new ResponseEntity<>(centerResponse, HttpStatus.OK);
+	} 
+	 
+	public ResponseEntity<CenterResponse> handleCitizenDownTime(@PathVariable int id)
+	{
+		CenterResponse centerResponse = new CenterResponse();
+		VaccinationCenter center = centerRepo.findById(id).get();
+		centerResponse.setCenter(center);
+		
+		return new ResponseEntity<CenterResponse>(centerResponse, HttpStatus.OK);
 	}
 }
